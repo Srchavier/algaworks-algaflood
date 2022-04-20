@@ -3,6 +3,8 @@ package com.algaworks.algafood.api.controller;
 import java.util.List;
 import java.util.Optional;
 
+import javax.validation.Valid;
+
 import com.algaworks.algafood.domain.exception.EntidadeEmUsoException;
 import com.algaworks.algafood.domain.exception.EntidadeNaoEncontradaException;
 import com.algaworks.algafood.domain.model.Estado;
@@ -45,12 +47,12 @@ public class EstadoController {
 
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
-	public Estado adicionar(@RequestBody Estado estado) {
+	public Estado adicionar(@Valid @RequestBody Estado estado) {
 		return cadastroEstado.salvar(estado);
 	}
 
 	@PutMapping("/{estadoId}")
-	public ResponseEntity<Estado> atualizar(@PathVariable Long estadoId,
+	public ResponseEntity<Estado> atualizar(@Valid @PathVariable Long estadoId,
 			@RequestBody Estado estado) {
 		Estado estadoAtual = cadastroEstado.buscarOuFalhar(estadoId);
 		BeanUtils.copyProperties(estado, estadoAtual, "id");

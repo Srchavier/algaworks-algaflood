@@ -1,6 +1,7 @@
 package com.algaworks.algafood.domain.exceptionHandler;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
@@ -18,4 +19,13 @@ public class Problem {
     private String detail;
     private LocalDateTime timestamp;
     private String userMessage;
+
+    private List<Object> objects;
+
+    @Getter
+    @Builder
+    public static class Object {
+        private String name;
+        private String userMessage;
+    }
 }
