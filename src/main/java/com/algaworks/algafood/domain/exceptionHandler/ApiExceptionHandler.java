@@ -2,7 +2,6 @@ package com.algaworks.algafood.domain.exceptionHandler;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 import com.algaworks.algafood.domain.exception.EntidadeEmUsoException;
@@ -35,7 +34,6 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 @ControllerAdvice
 public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
-        private static final Collector<Problem.Object, ?, List<Problem.Object>> LIST = Collectors.toList();
         private static final String MSG_ERRO_GENERICA_USUARIO_FINAL = "Ocorreu um erro interno inesperado no sistema. "
                         + "Tente novamente e se o problema persistir, entre em contato "
                         + "com o administrador do sistema.";
