@@ -1,8 +1,8 @@
 package com.algaworks.algafood.domain.model;
 
 import java.time.OffsetDateTime;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -13,7 +13,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 
-import org.springframework.data.annotation.CreatedDate;
+import org.hibernate.annotations.CreationTimestamp;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -36,9 +36,9 @@ public class Usuario {
 
     @Column(nullable = false)
     private String senha;
-
-    @CreatedDate
-    @Column(nullable = false, columnDefinition = "datetime")
+    
+	@CreationTimestamp
+	@Column(nullable = false, columnDefinition = "datetime")
     private OffsetDateTime dataCadastro;
 
     @ManyToMany
@@ -49,6 +49,22 @@ public class Usuario {
         inverseJoinColumns=
             @JoinColumn(name="grupo_id", referencedColumnName="id")
     )
-    private List<Grupo> grupo = new ArrayList<>();
+    private Set<Grupo> grupos = new HashSet<>();
     
+
+    public boolean senhaCoincideCom(String senha) {
+        return getSenha().equals(senha);
+    }
+    
+    public boolean senhaNaoCoincideCom(String senha) {
+        return !senhaCoincideCom(senha);
+    }
+
+    public boolean associarGrupo(Grupo grupo) {
+        return getGrupos().add(grupo);
+    }
+
+    public boolean desassociarGrupo(Grupo grupo) {
+        return getGrupos().remove(grupo);
+    }
 }

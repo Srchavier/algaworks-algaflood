@@ -23,5 +23,10 @@ public class CustomJpaRepositoryImpl<T, ID> extends SimpleJpaRepository<T, ID> i
         var jpql = "from " + getDomainClass().getName();
         return Optional.ofNullable(manager.createQuery(jpql, getDomainClass()).setMaxResults(1).getSingleResult());
     }
+
+    @Override
+    public void detach(T entity) {
+        manager.detach(entity);
+    }
     
 }

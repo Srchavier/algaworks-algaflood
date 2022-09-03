@@ -9,7 +9,7 @@ create table restaurante (
     endereco_cep varchar(60),
     endereco_logradouro varchar(60),
     endereco_numero varchar(60),
-    endereco_complemeento varchar(60),
+    endereco_complemento varchar(60),
     endereco_bairro varchar(60),
     endereco_cidade_id bigint,
     primary key (id)
