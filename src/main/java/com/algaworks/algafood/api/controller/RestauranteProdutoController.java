@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -25,8 +26,6 @@ import com.algaworks.algafood.domain.model.Restaurante;
 import com.algaworks.algafood.domain.repository.ProdutoRepository;
 import com.algaworks.algafood.domain.service.CadastroProdutoService;
 import com.algaworks.algafood.domain.service.CadastroRestauranteService;
-
-
 
 @RestController
 @RequestMapping(value="restaurantes/{idRestaurante}/produtos")
@@ -48,10 +47,15 @@ public class RestauranteProdutoController {
     private ProdutoInputDisassembler  disassembler;
 
     @GetMapping
-    public List<ProdutoModel> buscarTodosProdutos(@PathVariable Long idRestaurante) {
+    public List<ProdutoModel> buscarTodosProdutos(@PathVariable Long idRestaurante, @RequestParam(required = false) boolean incluirInativos) {
         Restaurante buscarOuFalhar = cadastroRestauranteService.buscarOuFalhar(idRestaurante);
-        List<Produto> findAll = produtoRepository.findByRestaurante(buscarOuFalhar);
-        return assembler.toCollectionModel(findAll);
+        List<Produto> todosProdutos = null;
+        if(incluirInativos) {
+            todosProdutos = produtoRepository.findTodosByRestaurante(buscarOuFalhar);
+        }else {
+            todosProdutos = produtoRepository.findByAtivosByRestaurante(buscarOuFalhar);
+        }
+        return assembler.toCollectionModel(todosProdutos);
     }
 
     @GetMapping(value="/{idProduto}")

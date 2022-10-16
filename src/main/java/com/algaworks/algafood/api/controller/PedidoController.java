@@ -5,6 +5,10 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,12 +24,16 @@ import com.algaworks.algafood.api.assembler.PedidoResumoModelAssembler;
 import com.algaworks.algafood.api.model.input.PedidoInput;
 import com.algaworks.algafood.api.model.output.PedidoModel;
 import com.algaworks.algafood.api.model.output.PedidoResumoModel;
+import com.algaworks.algafood.core.data.PageableTranslator;
 import com.algaworks.algafood.domain.exception.EntidadeNaoEncontradaException;
 import com.algaworks.algafood.domain.exception.NegocioException;
+import com.algaworks.algafood.domain.filter.PedidoFilter;
 import com.algaworks.algafood.domain.model.Pedido;
 import com.algaworks.algafood.domain.model.Usuario;
 import com.algaworks.algafood.domain.repository.PedidoRepository;
 import com.algaworks.algafood.domain.service.EmitirPedidoService;
+import com.algaworks.algafood.infrastructure.repository.spec.PedidoSpecs;
+import com.google.common.collect.ImmutableMap;
 
 @RestController
 @RequestMapping("pedidos")
@@ -47,10 +55,14 @@ public class PedidoController {
     private PedidoInputlDisassembler pedidoInputDisassembler;
 
     @GetMapping()
-    public List<PedidoResumoModel> todosPedidos() {
-        List<Pedido> findAll = pedidoRepository.findAll();
+    public Page<PedidoResumoModel> todosPedidos(PedidoFilter filtro, @PageableDefault(size = 10) Pageable pageable) {
+        pageable = traduzirPage(pageable);
 
-        return pedidoModelResumeAssembler.toCollection(findAll);
+        Page<Pedido> findAll = pedidoRepository.findAll(PedidoSpecs.usandoFiltro(filtro), pageable);
+
+        List<PedidoResumoModel> collection = pedidoModelResumeAssembler.toCollection(findAll.getContent());
+
+        return new PageImpl<>(collection, pageable, findAll.getTotalElements());
     }
 
     @GetMapping("/{codigoPedido}")
@@ -64,7 +76,7 @@ public class PedidoController {
         try {
             Pedido novoPedido = pedidoInputDisassembler.toDomainObject(pedidoInput);
     
-            // TODO pegar usuário autenticado
+            // TODO: pegar usuário autenticado
             novoPedido.setCliente(new Usuario());
             novoPedido.getCliente().setId(1L);
     
@@ -74,6 +86,16 @@ public class PedidoController {
         } catch (EntidadeNaoEncontradaException e) {
             throw new NegocioException(e.getMessage(), e);
         }
+    }
+
+    private Pageable traduzirPage(Pageable apiPageable) {
+        var mapeamento = ImmutableMap.of(
+            "codigo", "codigo",
+            "restaurante.nome", "restaurante.nome",
+            "nomeCliente", "cliente.nome",
+            "valorTotal", "valorTotal"
+        );
+        return PageableTranslator.translate(apiPageable, mapeamento);
     }
 
 }
