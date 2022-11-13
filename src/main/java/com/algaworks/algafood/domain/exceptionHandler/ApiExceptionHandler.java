@@ -1,6 +1,7 @@
 package com.algaworks.algafood.domain.exceptionHandler;
 
 import java.time.OffsetDateTime;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -19,11 +20,13 @@ import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
+import org.springframework.web.HttpMediaTypeNotAcceptableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -38,6 +41,10 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
         private static final String MSG_ERRO_GENERICA_USUARIO_FINAL = "Ocorreu um erro interno inesperado no sistema. "
                         + "Tente novamente e se o problema persistir, entre em contato "
                         + "com o administrador do sistema.";
+
+        private List<MediaType> naoResponderComFormatoJsonTypes = Arrays.asList(MediaType.IMAGE_JPEG,
+                        MediaType.IMAGE_PNG);
+
         @Autowired
         private MessageSource messageSource;
 
@@ -46,6 +53,11 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
                         WebRequest request) {
 
                 HttpStatus status = HttpStatus.NOT_FOUND;
+
+                if (verificarCompatibiliidadeMediaType(MediaType.parseMediaType(request.getHeader("accept")))) {
+                        return ResponseEntity.status(status).header("accept", request.getHeader("accept")).build();
+                }
+
                 String detail = ex.getMessage();
                 Problem problem = createProblemBuilder(ProblemType.RECURSO_NAO_ENCONTRADA, detail, status)
                                 .userMessage(detail)
@@ -87,6 +99,17 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
                 ex.printStackTrace();
 
                 return handleExceptionInternal(ex, problem, new HttpHeaders(), status, request);
+        }
+
+        private boolean verificarCompatibiliidadeMediaType(MediaType mediaTypeFoto) {
+                return naoResponderComFormatoJsonTypes.stream()
+                                .anyMatch(mediaTypeAceita -> mediaTypeAceita.equals(mediaTypeFoto));
+        }
+
+        @Override
+        protected ResponseEntity<Object> handleHttpMediaTypeNotAcceptable(HttpMediaTypeNotAcceptableException ex,
+                        HttpHeaders headers, HttpStatus status, WebRequest request) {
+                return ResponseEntity.status(status).headers(headers).build();
         }
 
         @Override

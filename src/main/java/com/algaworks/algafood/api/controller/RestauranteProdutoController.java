@@ -88,6 +88,7 @@ public class RestauranteProdutoController {
     }
 
     @DeleteMapping(value="/{idProduto}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deletaProduto(@PathVariable Long idProduto) {
         cadastroProdutoService.delete(idProduto);
     }
