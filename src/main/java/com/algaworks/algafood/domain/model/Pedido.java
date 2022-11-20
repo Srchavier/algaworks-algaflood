@@ -20,16 +20,16 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.PrePersist;
 
+import org.hibernate.annotations.CreationTimestamp;
+
 import com.algaworks.algafood.domain.exception.NegocioException;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-
-import org.hibernate.annotations.CreationTimestamp;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 @Data
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper = false)
 @Entity
 public class Pedido {
 
@@ -128,5 +128,6 @@ public class Pedido {
     private void gerarCodigo() {
         setCodigo(UUID.randomUUID().toString());
     }
+
 
 }
