@@ -8,11 +8,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.algaworks.algafood.api.swaggerapi.controller.FluxoPedidoControllerSwagger;
 import com.algaworks.algafood.domain.service.FluxoPedidoService;
 
 @RestController
 @RequestMapping("pedidos/{codigoPedido}")
-public class FluxoPedidoController {
+public class FluxoPedidoController implements FluxoPedidoControllerSwagger {
 
     @Autowired
     private FluxoPedidoService fluxoPedidoService;
@@ -34,6 +35,5 @@ public class FluxoPedidoController {
     public void cancelado(@PathVariable String codigoPedido) {
         fluxoPedidoService.cancelado(codigoPedido);
     }
-
 
 }

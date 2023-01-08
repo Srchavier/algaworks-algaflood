@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.algaworks.algafood.api.assembler.PermissaoModelAssembler;
 import com.algaworks.algafood.api.model.output.PermissaoModel;
+import com.algaworks.algafood.api.swaggerapi.controller.GrupoPermissaoControllerSwagger;
 import com.algaworks.algafood.domain.model.Grupo;
 import com.algaworks.algafood.domain.service.CadastroGrupoService;
 import com.algaworks.algafood.domain.service.CadastroPermissaoService;
@@ -22,7 +23,7 @@ import com.algaworks.algafood.domain.service.CadastroPermissaoService;
 
 @RestController
 @RequestMapping("grupos/{grupoId}/permissoes")
-public class GrupoPermissaoController {
+public class GrupoPermissaoController implements GrupoPermissaoControllerSwagger {
 
     @Autowired
     private PermissaoModelAssembler assembler;
@@ -34,21 +35,21 @@ public class GrupoPermissaoController {
     private CadastroGrupoService cadastroGrupoService;
 
     @GetMapping()
-    public List<PermissaoModel> getMethodName(@PathVariable Long grupoId) {
+    public List<PermissaoModel> listar(@PathVariable Long grupoId) {
         Grupo grupo = cadastroGrupoService.buscarOuFalhar(grupoId);
         return assembler.toCollection(grupo.getPermissoes());
     }
 
     @PutMapping(value="/{permissaoId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void associarPermissao(@PathVariable Long grupoId, @PathVariable Long permissaoId) {
+    public void associar(@PathVariable Long grupoId, @PathVariable Long permissaoId) {
          service.associarPermissao(grupoId, permissaoId);
     }
 
 
     @DeleteMapping(value="/{permissaoId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void desassociarPermissao(@PathVariable Long grupoId, @PathVariable Long permissaoId) {
+    public void desassociar(@PathVariable Long grupoId, @PathVariable Long permissaoId) {
         service.desassociarPermissao(grupoId, permissaoId);
     }
     

@@ -20,13 +20,14 @@ import com.algaworks.algafood.api.assembler.GrupoAssembler;
 import com.algaworks.algafood.api.assembler.GrupoDisassembler;
 import com.algaworks.algafood.api.model.input.GrupoInput;
 import com.algaworks.algafood.api.model.output.GrupoModel;
+import com.algaworks.algafood.api.swaggerapi.controller.GrupoControllerSwagger;
 import com.algaworks.algafood.domain.model.Grupo;
 import com.algaworks.algafood.domain.repository.GrupoRepository;
 import com.algaworks.algafood.domain.service.CadastroGrupoService;
 
 @RestController
 @RequestMapping("/grupos")
-public class GrupoController {
+public class GrupoController implements GrupoControllerSwagger {
 
     @Autowired
     private GrupoRepository grupoRepository;

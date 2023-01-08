@@ -24,6 +24,7 @@ import com.algaworks.algafood.api.assembler.PedidoResumoModelAssembler;
 import com.algaworks.algafood.api.model.input.PedidoInput;
 import com.algaworks.algafood.api.model.output.PedidoModel;
 import com.algaworks.algafood.api.model.output.PedidoResumoModel;
+import com.algaworks.algafood.api.swaggerapi.controller.PedidoControllerSwagger;
 import com.algaworks.algafood.core.data.PageableTranslator;
 import com.algaworks.algafood.domain.exception.EntidadeNaoEncontradaException;
 import com.algaworks.algafood.domain.exception.NegocioException;
@@ -37,7 +38,7 @@ import com.google.common.collect.ImmutableMap;
 
 @RestController
 @RequestMapping("pedidos")
-public class PedidoController {
+public class PedidoController implements PedidoControllerSwagger {
 
     @Autowired
     private PedidoRepository pedidoRepository;
@@ -91,9 +92,9 @@ public class PedidoController {
     private Pageable traduzirPage(Pageable apiPageable) {
         var mapeamento = ImmutableMap.of(
             "codigo", "codigo",
-            "restaurante.nome", "restaurante.nome",
+            "restauranteNome", "restaurante.nome",
             "nomeCliente", "cliente.nome",
-            "valorTotal", "valorTotal"
+            "valorTotal", "valor.total"
         );
         return PageableTranslator.translate(apiPageable, mapeamento);
     }

@@ -20,6 +20,7 @@ import com.algaworks.algafood.api.assembler.CidadeInputDisassembler;
 import com.algaworks.algafood.api.assembler.CidadeModelAssembler;
 import com.algaworks.algafood.api.model.input.CidadeInput;
 import com.algaworks.algafood.api.model.output.CidadeModel;
+import com.algaworks.algafood.api.swaggerapi.controller.CidadeControllerSwagger;
 import com.algaworks.algafood.domain.exception.EstadoNaoEncontradoException;
 import com.algaworks.algafood.domain.exception.NegocioException;
 import com.algaworks.algafood.domain.model.Cidade;
@@ -28,7 +29,7 @@ import com.algaworks.algafood.domain.service.CadastroCidadeService;
 
 @RestController
 @RequestMapping(value = "/cidades")
-public class CidadeController {
+public class CidadeController implements CidadeControllerSwagger {
 
 	@Autowired
 	private CidadeRepository cidadeRepository;
@@ -41,7 +42,6 @@ public class CidadeController {
 
 	@Autowired
 	private CidadeInputDisassembler disassembler;
-
 	@GetMapping
 	public List<CidadeModel> listar() {
 		return assembler.toCollecionModel(cidadeRepository.findAll());
@@ -63,8 +63,7 @@ public class CidadeController {
 	}
 
 	@PutMapping("/{cidadeId}")
-	public CidadeModel atualizar(@PathVariable Long cidadeId,
-			@Valid @RequestBody CidadeInput cidadeInput) {
+	public CidadeModel atualizar(@PathVariable Long cidadeId, @Valid @RequestBody CidadeInput cidadeInput) {
 		try {
 			Cidade cidadeAtual = cadastroCidade.buscarOuFalhar(cidadeId);
 			disassembler.copyToDomainObject(cidadeInput, cidadeAtual);

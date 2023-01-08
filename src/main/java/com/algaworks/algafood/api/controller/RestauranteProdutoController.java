@@ -21,6 +21,7 @@ import com.algaworks.algafood.api.assembler.ProdutoInputDisassembler;
 import com.algaworks.algafood.api.assembler.ProdutoModelAssembler;
 import com.algaworks.algafood.api.model.input.ProdutoInput;
 import com.algaworks.algafood.api.model.output.ProdutoModel;
+import com.algaworks.algafood.api.swaggerapi.controller.RestauranteProdutoControllerSwagger;
 import com.algaworks.algafood.domain.model.Produto;
 import com.algaworks.algafood.domain.model.Restaurante;
 import com.algaworks.algafood.domain.repository.ProdutoRepository;
@@ -29,7 +30,7 @@ import com.algaworks.algafood.domain.service.CadastroRestauranteService;
 
 @RestController
 @RequestMapping(value="restaurantes/{idRestaurante}/produtos")
-public class RestauranteProdutoController {
+public class RestauranteProdutoController implements RestauranteProdutoControllerSwagger{
 
     @Autowired
     private ProdutoRepository produtoRepository;
@@ -92,6 +93,5 @@ public class RestauranteProdutoController {
     public void deletaProduto(@PathVariable Long idProduto) {
         cadastroProdutoService.delete(idProduto);
     }
-    
     
 }

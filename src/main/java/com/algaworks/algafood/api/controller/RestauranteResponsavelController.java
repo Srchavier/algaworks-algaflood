@@ -14,12 +14,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.algaworks.algafood.api.assembler.UsuarioModelAssembler;
 import com.algaworks.algafood.api.model.output.UsuarioModel;
+import com.algaworks.algafood.api.swaggerapi.controller.RestauranteResponsavelControllerSwagger;
 import com.algaworks.algafood.domain.model.Restaurante;
 import com.algaworks.algafood.domain.service.CadastroRestauranteService;
 
 @RestController
 @RequestMapping("restaurantes/{restauranteId}/responsaveis")
-public class RestauranteResponsavelController {
+public class RestauranteResponsavelController implements RestauranteResponsavelControllerSwagger {
 
     @Autowired
     private CadastroRestauranteService cadastroRestauranteService;

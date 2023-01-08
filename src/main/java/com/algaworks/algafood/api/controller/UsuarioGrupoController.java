@@ -14,13 +14,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.algaworks.algafood.api.assembler.GrupoAssembler;
 import com.algaworks.algafood.api.model.output.GrupoModel;
+import com.algaworks.algafood.api.swaggerapi.controller.UsuarioGrupoControllerSwagger;
 import com.algaworks.algafood.domain.model.Usuario;
 import com.algaworks.algafood.domain.service.CadastroUsuarioService;
 
 
 @RestController
 @RequestMapping("usuarios/{usuarioId}/grupos")
-public class UsuarioGrupoController {
+public class UsuarioGrupoController implements UsuarioGrupoControllerSwagger {
 
     @Autowired
     private CadastroUsuarioService cadastroUsuarioService;

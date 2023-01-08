@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.algaworks.algafood.api.swaggerapi.controller.EstatisticasControllerSwagger;
 import com.algaworks.algafood.domain.filter.VendaDiariaFilter;
 import com.algaworks.algafood.domain.model.dto.VendaDiaria;
 import com.algaworks.algafood.domain.service.VendaQueryService;
@@ -18,7 +19,7 @@ import com.algaworks.algafood.domain.service.VendaReportService;
 
 @RestController
 @RequestMapping(path = "/estatisticas")
-public class EstatisticasController {
+public class EstatisticasController implements EstatisticasControllerSwagger {
 
     @Autowired
     private VendaQueryService queryService;
@@ -27,12 +28,12 @@ public class EstatisticasController {
     private VendaReportService reportService;
 
     @GetMapping(path = "/vendas-diarias", produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<VendaDiaria> consultar(VendaDiariaFilter filtro,@RequestParam(required = false, defaultValue = "+00:00" ) String timeOffset) {
+    public List<VendaDiaria> consultarVendasDiarias(VendaDiariaFilter filtro,@RequestParam(required = false, defaultValue = "+00:00" ) String timeOffset) {
         return queryService.consultarVendasDiarias(filtro, timeOffset);
     }
 
     @GetMapping(path = "/vendas-diarias", produces = MediaType.APPLICATION_PDF_VALUE)
-    public ResponseEntity<byte[]> consultarPdf(VendaDiariaFilter filtro,@RequestParam(required = false, defaultValue = "+00:00" ) String timeOffset) {
+    public ResponseEntity<byte[]> consultarVendasDiariasPdf(VendaDiariaFilter filtro,@RequestParam(required = false, defaultValue = "+00:00" ) String timeOffset) {
 
         var headers = new HttpHeaders();
         headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=vendas-diarias.pdf");
