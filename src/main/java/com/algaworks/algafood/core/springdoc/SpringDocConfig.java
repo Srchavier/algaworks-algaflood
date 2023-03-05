@@ -6,11 +6,14 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.springdoc.core.SpringDocUtils;
 import org.springdoc.core.customizers.OpenApiCustomiser;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.hateoas.Links;
 
-import com.algaworks.algafood.domain.exceptionHandler.Problem;
+import com.algaworks.algafood.api.exceptionHandler.Problem;
+import com.algaworks.algafood.api.v1.swaggerapi.model.LinksModelOpenApi;
 
 import io.swagger.v3.core.converter.ModelConverters;
 import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
@@ -67,12 +70,14 @@ public class SpringDocConfig {
                         new Tag().name("Produtos").description("Gerencia os produtos"),
                         new Tag().name("Usuários").description("Gerencia os usuários"),
                         new Tag().name("Permissões").description("Gerencia as permissões"),
-                        new Tag().name("Estatísticas").description("Estatísticas da AlgaFood")
+                        new Tag().name("Estatísticas").description("Estatísticas da AlgaFood"),
+                        new Tag().name("Permissões").description("Gerencia as permissões")
                         ))
                 .components(new Components()
                         .schemas(gerarSchemas())
                         .responses(gerarResponses())
-                        );
+                );
+                
 
     }
 
@@ -81,6 +86,10 @@ public class SpringDocConfig {
      */
     @Bean
     public OpenApiCustomiser openApiCustomiser() {
+        // mudando objeto de links
+        SpringDocUtils.getConfig()
+        .replaceWithClass(Links.class, LinksModelOpenApi.class);
+
         return openApi -> {
             openApi.getPaths()
                     .values().stream()

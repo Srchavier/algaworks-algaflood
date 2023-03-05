@@ -116,6 +116,18 @@ public class Pedido {
         setDataCancelamento(OffsetDateTime.now());
     }
 
+    public Boolean podeConfirmar() {
+        return getStatus().podeAlterarPara(StatusPedido.CONFIRMADO);
+    }
+
+    public Boolean podeEntregar() {
+        return getStatus().podeAlterarPara(StatusPedido.ENTREGUE);
+    }
+
+    public Boolean podeCancelar() {
+        return getStatus().podeAlterarPara(StatusPedido.CANCELADO);
+    }
+
     private void setStatus(StatusPedido novoStatus) {
         if (getStatus().naoPodeAlterarPara(novoStatus)) {
             throw new NegocioException(String.format("Status do pedido %s não pode ser alterado de %s para %s",
