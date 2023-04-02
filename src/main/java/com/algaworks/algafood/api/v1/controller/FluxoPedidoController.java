@@ -13,7 +13,7 @@ import com.algaworks.algafood.api.v1.swaggerapi.controller.FluxoPedidoController
 import com.algaworks.algafood.domain.service.FluxoPedidoService;
 
 @RestController
-@RequestMapping("pedidos/{codigoPedido}")
+@RequestMapping("/v1/pedidos/{codigoPedido}")
 public class FluxoPedidoController implements FluxoPedidoControllerSwagger {
 
     @Autowired

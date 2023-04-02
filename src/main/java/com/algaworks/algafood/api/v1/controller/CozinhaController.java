@@ -28,8 +28,11 @@ import com.algaworks.algafood.domain.model.Cozinha;
 import com.algaworks.algafood.domain.repository.CozinhaRepository;
 import com.algaworks.algafood.domain.service.CadastroCozinhaService;
 
+import lombok.extern.slf4j.Slf4j;
+
 @RestController
-@RequestMapping(value = "/cozinhas")
+@RequestMapping(value = "/v1/cozinhas")
+@Slf4j
 public class CozinhaController implements CozinhaControllerSwagger {
 
 	@Autowired
@@ -49,11 +52,10 @@ public class CozinhaController implements CozinhaControllerSwagger {
 
 	@GetMapping
 	public PagedModel<CozinhaModel> listar(@PageableDefault(size = 10) Pageable pageable) {
+		log.info("Consultando cozinhas com paginas de {} registros...", pageable.getPageSize());
+
 		Page<Cozinha> cozinhas = cozinhaRepository.findAll(pageable);
-		// CollectionModel<CozinhaModel> cozinhasModel = assembler.toCollectionModel(cozinhas.getContent());
-		PagedModel<CozinhaModel> cozinhasModel = pagedResourcesAssembler.toModel(cozinhas, assembler);
-		// return new PageImpl<>(cozinhasModel, pageable, cozinhas.getTotalElements());
-		return cozinhasModel;
+		return pagedResourcesAssembler.toModel(cozinhas, assembler);
 	}
 
 	@GetMapping("/{cozinhaId}")

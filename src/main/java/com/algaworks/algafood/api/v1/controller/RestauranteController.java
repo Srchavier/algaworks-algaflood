@@ -38,7 +38,7 @@ import com.algaworks.algafood.domain.repository.RestauranteRepository;
 import com.algaworks.algafood.domain.service.CadastroRestauranteService;
 
 @RestController
-@RequestMapping(value = "/restaurantes")
+@RequestMapping(value = "/v1/restaurantes")
 public class RestauranteController implements RestauranteControllerSwagger {
 
 	@Autowired

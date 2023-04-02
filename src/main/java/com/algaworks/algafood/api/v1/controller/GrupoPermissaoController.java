@@ -21,7 +21,7 @@ import com.algaworks.algafood.domain.service.CadastroGrupoService;
 import com.algaworks.algafood.domain.service.CadastroPermissaoService;
 
 @RestController
-@RequestMapping("grupos/{grupoId}/permissoes")
+@RequestMapping("/v1/grupos/{grupoId}/permissoes")
 public class GrupoPermissaoController implements GrupoPermissaoControllerSwagger {
 
     @Autowired

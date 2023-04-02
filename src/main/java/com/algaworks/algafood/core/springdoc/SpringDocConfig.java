@@ -34,11 +34,16 @@ import io.swagger.v3.oas.models.responses.ApiResponses;
 import io.swagger.v3.oas.models.tags.Tag;
 
 @Configuration
-@SecurityScheme(name = "security_auth", type = SecuritySchemeType.OAUTH2, flows = @OAuthFlows(authorizationCode = @OAuthFlow(authorizationUrl = "${springdoc.oAuthFlow.authorizationUrl}", tokenUrl = "${springdoc.oAuthFlow.tokenUrl}", scopes = {
-        @OAuthScope(name = "READ", description = "read scope"),
-        @OAuthScope(name = "WRITE", description = "write scope")
-
-})))
+@SecurityScheme(name = "security_auth",
+        type = SecuritySchemeType.OAUTH2,
+        flows = @OAuthFlows(authorizationCode = @OAuthFlow(
+                authorizationUrl = "${springdoc.oAuthFlow.authorizationUrl}",
+                tokenUrl = "${springdoc.oAuthFlow.tokenUrl}",
+                scopes = {
+                        @OAuthScope(name = "READ", description = "read scope"),
+                        @OAuthScope(name = "WRITE", description = "write scope")
+                }
+        )))
 public class SpringDocConfig {
 
     private static final String NOT_FOUND_RESPONSE = "NotFoundResponse";
